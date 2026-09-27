@@ -45,6 +45,17 @@ jiyi/
 # Logs
 *.log
 
+# 开发期杂物，不随仓库分发
+*.spec
+*.lnk
+PROJECT_NOTES.md
+_blink_backup/
+check_syntax.py
+export_blink.py
+make_memes.py
+make_zip.py
+dsh laun/DSHL/
+
 # 上面的 Python 通用规则会误伤便携运行时（如 lib/ 匹配 runtime/Lib/），这里全部放行
 !runtime/
 !runtime/Lib/
