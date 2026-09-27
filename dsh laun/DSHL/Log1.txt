@@ -1,0 +1,36 @@
+19:29:26.950 I <4 · Logger> [Logger] BaseLogger 日志初始化结束
+19:29:26.950 I <3 · Logger> [Logger] 开始轮转日志文件
+19:29:26.962 I <3 · Logger> [Logger] DshLogger 日志初始化结束
+19:29:26.982 I [Application] 程序版本：正式版 0.4.1.2 (427)
+19:29:26.982 I [Application] 识别码：0000-0000-0000-0000
+19:29:26.982 I [Application] 程序路径：D:\dafeiyu-pet-main\dsh laun\PCL-Deepseek-Harness-Launcher.exe
+19:29:26.982 I [Application] 系统编码：gb2312 (936, GBK=True)
+19:29:26.983 I [Application] 管理员权限：True
+19:29:26.984 I [Application] 第一阶段加载用时：50 ms
+19:29:27.091 I [FormMain] 全新安装，使用默认的版本隔离
+19:29:27.127 I [ModLoader] 加载器 LoaderTask`2 Version Folder List 状态改变：Loading
+19:29:27.128 I [FormMain] 第二阶段加载用时：140 ms
+19:29:27.130 I <5 · L/Version Folder List> [ModLoader] 加载器 LoaderTask`2 Version Folder List 状态改变：Finished
+19:29:27.273 I [FormMain] 从设置更新背景图片与标题栏样式
+19:29:27.277 I [PageLaunchLeft] 启动按钮：正在加载
+19:29:27.453 I [FormMain] 窗口已置顶，位置：(510, 245), 900 x 550
+19:29:27.455 I <12 · Animation> [ModAnimation] 动画线程开始
+19:29:27.455 I [FormMain] 第三阶段加载用时：185 ms
+19:29:27.458 I <15 · W/WslRefreshWorker> [RedoableWorker] WslRefreshWorker：运行开始
+19:29:27.464 I <16 · Invoke 46> [ModMain] 开始清理任务缓存文件夹
+19:29:27.470 I <16 · Invoke 46> [ModMain] 已清理任务缓存文件夹
+19:29:27.476 I <16 · Invoke 46> [ModLoader] 加载器 LoaderDownload 源码获取 50# 状态改变：Loading
+19:29:27.494 I <20 · L/下载 52> [ModNet] 开始清理下载缓存
+19:29:27.494 I <20 · L/下载 52> [ModNet] 下载缓存已清理
+19:29:27.552 I <30 · 下载 52/51/54#> [ModNet] download.txt：开始，起始点 0，https://sq.kashic.cn/dshl/announcement.json
+19:29:27.562 I <14 · 初始化> [ModLoader] 加载器 LoaderTask`2 启动器配置更新 状态改变：Loading
+19:29:27.570 I <32 · L/启动器配置更新> [ModLoader] 加载器 LoaderTask`2 启动器配置更新 状态改变：Finished
+19:29:27.579 I <34 · 检查启动器更新> [ModLoader] 加载器 LoaderDownload 源码获取 57# 状态改变：Loading
+19:29:27.589 I <36 · 下载 59/58/60#> [ModNet] download.txt：开始，起始点 0，https://sq.kashic.cn/dshl/latest.json
+19:29:27.631 I [PageLaunchRight] 实例化：清空主页 UI，来源为空
+19:29:27.632 I [PageLaunchLeft] 启动按钮：可启动 Harness
+19:29:27.635 I [ModAnimation] 两个动画帧间隔 169 ms
+19:29:28.185 I [FormMain] DPI：96，系统版本：Microsoft Windows NT 10.0.19044.0，程序位置：D:\dafeiyu-pet-main\dsh laun\PCL-Deepseek-Harness-Launcher.exe
+19:29:29.308 I [MyIconButton] 按下图标按钮：BtnTitleClose
+19:29:29.313 I [FormMain] 收到关闭指令
+19:29:29.551 I [FormMain] 程序已退出，返回值：Success
