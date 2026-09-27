@@ -41,7 +41,7 @@ from PySide6.QtGui import (QPainter, QPixmap, QFont, QColor, QIcon, QFontMetrics
                            QPolygonF, QTextOption, QGuiApplication, QPen, QPainterPath, QImage,
                            QMovie, QImageReader)
 from PySide6.QtWidgets import (QApplication, QWidget, QMenu, QSystemTrayIcon,
-                               QMessageBox, QInputDialog, QLineEdit, QVBoxLayout,
+                               QMessageBox, QLineEdit, QVBoxLayout,
                                QHBoxLayout, QGridLayout, QPushButton, QFrame, QDialog, QToolButton,
                                QPlainTextEdit, QLabel, QScrollArea, QSizePolicy)
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
@@ -916,6 +916,148 @@ class ConfirmDialog(QDialog):
         return d._ok
 
 
+class TextDialog(QDialog):
+    """文本输入弹窗 - 深蓝半透明圆滑 UI（替代原生 QInputDialog）"""
+    W = 400
+
+    def __init__(self, parent=None, title="", label="",
+                 ok_text="确定", cancel_text="取消", default="", password=False,
+                 icon="✏️"):
+        super().__init__(parent)
+        self.setModal(False)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool | Qt.WindowType.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self._ok = False
+
+        container = QFrame(self)
+        container.setStyleSheet("""
+            QFrame {
+                background: rgba(30, 60, 114, 225);
+                border-radius: 18px;
+                border: 1px solid rgba(79, 159, 255, 160);
+            }
+        """)
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+        outer.addWidget(container)
+        layout = QVBoxLayout(container)
+        layout.setContentsMargins(22, 18, 22, 18)
+        layout.setSpacing(10)
+
+        head = QLabel(f"{icon}  {title}" if icon else title)
+        head.setFont(QFont("Microsoft YaHei UI", 14, QFont.Weight.Bold))
+        head.setStyleSheet("color:#90caf9; font-size:14px;")
+        layout.addWidget(head)
+
+        if label:
+            body = QLabel(label)
+            body.setFont(QFont("Microsoft YaHei UI", 11))
+            body.setStyleSheet("color:#e8f0fe; font-size:13px;")
+            body.setWordWrap(True)
+            layout.addWidget(body)
+
+        self.input = QLineEdit()
+        self.input.setText(default)
+        if password:
+            self.input.setEchoMode(QLineEdit.EchoMode.Password)
+        self.input.setStyleSheet("""
+            QLineEdit {
+                background: rgba(20, 40, 80, 200);
+                color: #e8f0fe;
+                font-size: 14px;
+                font-family: 'Microsoft YaHei UI';
+                border: 1px solid rgba(79, 159, 255, 90);
+                border-radius: 10px;
+                padding: 6px 10px;
+            }
+            QLineEdit:focus {
+                border: 1px solid rgba(79, 159, 255, 200);
+                background: rgba(20, 40, 80, 220);
+            }
+        """)
+        self.input.returnPressed.connect(self._accept)
+        layout.addWidget(self.input)
+
+        btn_bar = QHBoxLayout()
+        btn_bar.setSpacing(10)
+        if cancel_text:
+            cancel_btn = QPushButton(cancel_text)
+            cancel_btn.setFixedHeight(34)
+            cancel_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(20, 40, 80, 180);
+                    color: #cfe2ff;
+                    border: 1px solid rgba(79, 159, 255, 90);
+                    border-radius: 17px;
+                    font-size: 13px;
+                    font-family: 'Microsoft YaHei UI';
+                }
+                QPushButton:hover { background: rgba(40, 70, 130, 200); }
+            """)
+            cancel_btn.clicked.connect(self.reject)
+            btn_bar.addWidget(cancel_btn)
+
+        ok_btn = QPushButton(ok_text)
+        ok_btn.setFixedHeight(34)
+        ok_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(66, 133, 244, 200);
+                color: #fff; border: none;
+                border-radius: 17px; font-size: 13px; font-weight: bold;
+                font-family: 'Microsoft YaHei UI';
+            }
+            QPushButton:hover { background: rgba(66, 133, 244, 240); }
+            QPushButton:pressed { background: rgba(45, 95, 200, 240); }
+        """)
+        ok_btn.clicked.connect(self._accept)
+        btn_bar.addStretch()
+        btn_bar.addWidget(ok_btn)
+        layout.addLayout(btn_bar)
+
+        fm = QFontMetrics(QFont("Microsoft YaHei UI", 11))
+        tw = self.W - 44
+        line_count = 1
+        if label:
+            line_count = max(1, fm.boundingRect(0, 0, tw, 10000, int(Qt.TextFlag.TextWordWrap), label).height() // max(1, fm.lineSpacing()))
+        h = 34 + fm.lineSpacing() + (line_count + 1) * fm.lineSpacing() + 42 + 16 + 34 + 18
+        self.setFixedSize(self.W, h)
+        container.setFixedSize(self.W, h)
+
+    def _accept(self):
+        self._ok = True
+        self.accept()
+
+    def value(self):
+        return self.input.text()
+
+    def popup_center(self):
+        geo = QApplication.primaryScreen().availableGeometry()
+        self.move(geo.center().x() - self.W // 2, geo.center().y() - self.height() // 2)
+        self.show()
+        self.raise_()
+        self.input.setFocus()
+
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key.Key_Escape:
+            self.reject()
+        else:
+            super().keyPressEvent(e)
+
+    @staticmethod
+    def ask(parent, title, label="", ok_text="确定", cancel_text="取消",
+            default="", password=False, icon="✏️"):
+        """阻塞式弹出，返回 (文本, 是否点了确定)"""
+        d = TextDialog(parent, title=title, label=label, ok_text=ok_text,
+                       cancel_text=cancel_text, default=default, password=password,
+                       icon=icon)
+        d.popup_center()
+        from PySide6.QtCore import QEventLoop
+        loop = QEventLoop()
+        d.finished.connect(loop.quit)
+        loop.exec()
+        return d.value(), d._ok
+
+
 class FunctionPanel(QFrame):
     """左键弹出的功能列表"""
     def __init__(self, parent=None):
@@ -1474,12 +1616,12 @@ class SideBubble(QWidget):
 
 class PetWindow(QWidget):
     def _set_city_dialog(self):
-        city, ok = QInputDialog.getText(
+        city, ok = TextDialog.ask(
             self,
-            "设置城市",
-            "输入城市名:",
-            QLineEdit.EchoMode.Normal,
-            self.cfg.get("city", "沈阳")
+            title="设置城市",
+            label="输入城市名：",
+            default=self.cfg.get("city", "沈阳"),
+            icon="🏙️",
         )
 
         print("输入框结果:", city, ok)
@@ -1487,7 +1629,7 @@ class PetWindow(QWidget):
         if ok and city.strip():
             self.cfg["city"] = city.strip()
             print("cfg现在:", self.cfg["city"])
-            self.say(f"城市已设置为{city}", force=True)
+            self.say(f"城市已设置为{city.strip()}", force=True)
 
     def __init__(self):
         
@@ -3276,12 +3418,11 @@ class PetWindow(QWidget):
         
         if reply:
             # Second confirmation - type to confirm
-            text, ok = QInputDialog.getText(
+            text, ok = TextDialog.ask(
                 self,
-                "输入确认",
-                "请输入“我确认”以继续删除：",
-                QLineEdit.EchoMode.Normal,
-                ""
+                title="输入确认",
+                label="请输入“我确认”以继续删除：",
+                icon="🚨",
             )
             
             if ok and text.strip() == "我确认":

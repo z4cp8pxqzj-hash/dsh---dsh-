@@ -1,3 +1,12 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-runtime/* filter=lfs diff=lfs merge=lfs -text
+
+# 便携运行时全部走 LFS（含子目录）
+runtime/** filter=lfs diff=lfs merge=lfs -text
+
+# Python 源码保持普通文本
+*.py text
+*.bat text
+*.md text
+*.txt text
+*.json text

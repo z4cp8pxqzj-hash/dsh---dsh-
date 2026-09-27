@@ -44,3 +44,8 @@ jiyi/
 
 # Logs
 *.log
+
+# 上面的 Python 通用规则会误伤便携运行时（如 lib/ 匹配 runtime/Lib/），这里全部放行
+!runtime/
+!runtime/Lib/
+!runtime/Lib/**
