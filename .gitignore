@@ -56,7 +56,8 @@ make_memes.py
 make_zip.py
 dsh laun/DSHL/
 
-# 上面的 Python 通用规则会误伤便携运行时（如 lib/ 匹配 runtime/Lib/），这里全部放行
+# 上面的 Python 通用规则会误伤便携运行时
+# （lib/ 会匹配 runtime/Lib/，*.py[cod] 里的 [cod] 会匹配 *.pyd，如 _ssl.pyd、_socket.pyd）
+# 这里把整个 runtime 目录彻底放行
 !runtime/
-!runtime/Lib/
-!runtime/Lib/**
+!runtime/**
