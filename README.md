@@ -46,8 +46,9 @@
 
 ### 方式一：便携版（推荐）
 
-复制本仓库（或下载 release，runtime 走 Git LFS），双击 `启动桌宠.bat` 即可。
-无需安装 Python，`runtime/` 已内置完整解释器和全部依赖。
+在 GitHub 页面点绿色「Code」→「Download ZIP」，解压后双击 `启动桌宠.bat` 即可。
+也可以 `git clone`，效果一样。
+无需安装 Python，`runtime/` 已内置完整解释器和全部依赖（约 155 MB）。
 
 ### 方式二：源码运行
 
@@ -87,7 +88,7 @@ python pet.py
 | `music/` | 右键放歌的本地音乐 |
 | `jiyi/` | 记忆数据目录（聊天历史 / 知识库，自动生成，不入仓库） |
 | `dsh laun/` | DSH 启动器（可选组件） |
-| `runtime/` | 便携 Python 环境 + 依赖（Git LFS） |
+| `runtime/` | 便携 Python 环境 + 依赖（约 155 MB，解压即用） |
 | `启动桌宠.bat` / `start.bat` | 启动脚本（便携版 / 源码版） |
 | `config.json` | 本地配置：城市、模式、体型、API 加密 Key（不入仓库） |
 | `LICENSE` | MIT 协议 |
